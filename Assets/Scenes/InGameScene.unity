@@ -827,12 +827,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_objBarrel: {fileID: 7029331}
-  m_dynamicObj: {fileID: 1969277400}
-  playerHP: 3
+  m_dynamicObj: {fileID: 959584553}
+  playerHP: 10
   m_fSpeed: 5
   m_invinciTime: 1
   m_shootType: 1
-  m_playershootlv: 7
+  m_playershootlv: 1
 --- !u!95 &1330883257
 Animator:
   serializedVersion: 5

@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-
+        m_shootType = DataManager.Instance.shootforplayer();
     }
     public void hit()
     {

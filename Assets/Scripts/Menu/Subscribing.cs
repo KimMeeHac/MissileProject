@@ -20,6 +20,7 @@ public class Subscribing : MonoBehaviour
         else
         {
             shoottype = shoottypestring[btn - 2];
+            DataManager.Instance.shoottype(btn - 2);
         }
         GetComponent<TextMeshProUGUI>().text= "炼累 规过\n"+keymouse + "\n惯荤 规过\n" + shoottype;
     }
