@@ -23,7 +23,7 @@ public class DataManager : MonoBehaviour
     }
     public void shoottype(int _shoottype)
     {
-       shootty=_shoottype;
+       shootty=_shoottype+1;
     }
     public int shootforplayer()
     {

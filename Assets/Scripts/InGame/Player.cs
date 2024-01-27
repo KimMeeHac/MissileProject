@@ -2,16 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] GameObject m_objBarrel;
     [SerializeField] Transform m_dynamicObj;
     [Header("플레이어 스텟")]
-    [Tooltip("체력")][SerializeField] int playerHP = 10;
+    [Tooltip("체력")][SerializeField] int playerHP = 5;
     [Tooltip("이동속도 조정기능")][SerializeField] float m_fSpeed = 5f;
     [Tooltip("무적시간 조정기능")][SerializeField] float m_invinciTime = 1f;
-    [Tooltip("발사 타입")][Range(1, 5)][SerializeField] int m_shootType = 1;
+    [Tooltip("발사 타입")][Range(1, 4)][SerializeField] int m_shootType = 1;
     [Tooltip("발사 단계")][SerializeField][Range(1, 7)] int m_playershootlv = 1;
 
     SpriteRenderer playerRenderer;
@@ -29,6 +30,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_shootType = DataManager.Instance.shootforplayer();
+        m_playershootlv = 1;
+        Debug.Log(m_shootType);
     }
     public void hit()
     {
@@ -41,7 +44,7 @@ public class Player : MonoBehaviour
         {
             playerHP--;
             m_invincibile = true;
-            if (playerHP == 0)
+            if (playerHP <= 0)
             {
                 //Debug.Log("체력0 들어옴");
                 Destroy(gameObject);
@@ -101,6 +104,21 @@ public class Player : MonoBehaviour
             m_invinciTimer = 0f;
             invin.a = 1f;
             playerRenderer.color = invin;
+        }
+    }
+    public void shootlvup()
+    {
+        m_playershootlv++;
+    }
+    public void hpup()
+    {
+        if (playerHP < 5)
+        {
+            playerHP++;
+        }
+        else
+        {
+            Debug.Log("풀피");
         }
     }
     void shoot()
@@ -213,20 +231,6 @@ public class Player : MonoBehaviour
                             }
                         }
                     }
-                }
-                break;
-            case 5://5타입 미니언소환형 
-                switch (m_playershootlv)
-                {
-                    case 1:
-
-                        break;
-                    case 2: break;
-                    case 3: break;
-                    case 4: break;
-                    case 5: break;
-                    case 6: break;
-                    case 7: break;
                 }
                 break;
         }

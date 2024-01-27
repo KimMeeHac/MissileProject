@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
     bool alreadydeath = false;
     int pattern;
     int shoottime = 0;
+    public int point = 0;
     Player player;
     private void OnBecameInvisible()
     {
@@ -73,6 +74,7 @@ public class Enemy : MonoBehaviour
             
             if (!isBoss)
             {
+                GameManager.Instance.Scoretext(point);
                 GameManager.Instance.bosscount();
                 if (haveitem&&!alreadydeath)
                 {

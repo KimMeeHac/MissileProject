@@ -26,6 +26,7 @@ public class PoolingManager : MonoBehaviour
         Player_Bullet_A,
         Player_Bullet_B,
         Player_Bullet_C,
+        Boomicon
     }
     [System.Serializable]
     public class cPoolingObject

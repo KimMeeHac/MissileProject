@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Itemlist : MonoBehaviour
 {
-    ItemType m_itemType;
     private Vector3 m_moveItemPos;
     private float m_moveSpeed = 5f;
     float timer = 0f;
@@ -23,15 +22,17 @@ public class Itemlist : MonoBehaviour
         if (collision.tag == eTag.Player.ToString())
         {
             if (transform.name =="Item Boom") {
+                GameManager.Instance.Boomlist(false);
                 Debug.Log("boom");
             }
             else if (transform.name =="Item Coin") {
-                Debug.Log("coin");
+                GameManager.Instance.Scoretext(10);
             }
             else if (transform.name =="Item Power") {
-                Debug.Log("power");
+                collision.GetComponent<Player>().shootlvup();
             }
             else {
+                collision.GetComponent<Player>().hpup();
                 Debug.Log("hp");
             }
             RemoveObj();

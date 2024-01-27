@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +12,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject m_objBoss;
     [SerializeField] GameObject m_objPlayer;
     [SerializeField] Transform dynamicobj;
+    [SerializeField] TextMeshProUGUI Score;
+    [SerializeField] TextMeshProUGUI BestScore;
+    [SerializeField] Transform Boomgroup;
+    [SerializeField] GameObject boomicon;
     Vector3 spawnaxis;
     float m_fTimer;
     float spawnLv;
@@ -22,7 +27,9 @@ public class GameManager : MonoBehaviour
     int bosskillcount=0;
     [SerializeField]public bool bossspawn;
     int iRand;
+    int totalScore;
     float droprate;
+    int boomcount = 0;
     [SerializeField]int spawncount = 0;
     [Tooltip("몹 스폰 시간")][SerializeField] float m_spawnTime = 1f;
     private void Awake()
@@ -68,6 +75,7 @@ public class GameManager : MonoBehaviour
             string findname = m_listEnemy[iRand].name;//그 몹의 이름
             GameObject objenemy = PoolingManager.Instance.CreateObj(findname, dynamicobj);//풀링으로 몹 생성
             objenemy.GetComponent<Enemy>().m_fHp *= unithpx;
+            objenemy.GetComponent<Enemy>().point = iRand + 1;
             objenemy.transform.position = new Vector3(Random.Range(spawnaxis.x, spawnaxis.y), 6f);//몹 생성 위치
             droprate = Random.Range(0.0f, 100.0f);//아이템 드랍할 몹 생성 확률
             if (droprate >= 70.0f)//70 이상시 아이템 드랍하도록 처리
@@ -123,5 +131,23 @@ public class GameManager : MonoBehaviour
             spawnLv = 0.5f;
         }
         bossspawn = false;
+    }
+    public void Scoretext(int _score)
+    {
+        totalScore += _score;
+        Score.text = totalScore.ToString("D5");
+    }
+    public void Boomlist(bool _use)
+    {
+        if (boomcount < 3 && !_use)
+        {
+            boomcount++;
+            Instantiate(boomicon, Boomgroup);
+        }
+        else if (boomcount > 0 && _use)
+        {
+            boomcount--;
+        }
+      
     }
 }

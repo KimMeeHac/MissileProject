@@ -1932,13 +1932,13 @@ MonoBehaviour:
     count: 10
     description: "\uD0C0\uC6D0\uD615 \uC801\uCD1D\uC54C"
   - obj: {fileID: 5083855563560017892, guid: 948744cdd76a6c643861b46622b22b59, type: 3}
-    count: 10
+    count: 20
     description: "\uC6D0\uD615 \uC801\uCD1D\uC54C"
   - obj: {fileID: 1665302180909723149, guid: ceb2254d21faa214982cb68ea07ca497, type: 3}
-    count: 10
+    count: 20
     description: "\uC6D0\uD615 \uC801\uCD1D\uC54C2"
   - obj: {fileID: 8774767722478872196, guid: 448599c6aa9cd434e8c0710ab8f51418, type: 3}
-    count: 10
+    count: 20
     description: "\uAE30\uB2E4\uB780 \uC801\uCD1D\uC54C"
   - obj: {fileID: 8177690750666242675, guid: e920bbebff8687f48bf83aec77501841, type: 3}
     count: 5
@@ -1949,18 +1949,18 @@ MonoBehaviour:
   - obj: {fileID: 8301476279162408001, guid: 374b6bf507477f94dbe3e0f82d58fbbc, type: 3}
     count: 5
     description: "\uD15C \uB370\uBBF8\uC9C0 \uC99D\uAC00"
-  - obj: {fileID: 5293590941587633776, guid: a41863b4031503f4691faa19a1c9ab77, type: 3}
-    count: 3
-    description: "\uD15C \uC18C\uD658\uC218 "
+  - obj: {fileID: 2061006023484023509, guid: bfbb666ff4c7f20419581b61d0efb2da, type: 3}
+    count: 5
+    description: "\uD544\uC0B4\uAE30 "
   - obj: {fileID: 4063028733599780897, guid: eea07f431bab1d1438d2818746e81932, type: 3}
     count: 50
     description: "\uD50C\uB808\uC774\uC5B4 \uD0C0\uC6D0\uD615 \uCD1D\uC54C"
   - obj: {fileID: 5382274821839269995, guid: 566feccb20800554b885c8ab9eef41bf, type: 3}
     count: 50
     description: "\uD50C\uB808\uC774\uC5B4 \uAE30\uB2E4\uB780 \uCD1D\uC54C"
-  - obj: {fileID: 8524014063389717680, guid: a6b408e6f3928ae4c8742059810dc324, type: 3}
-    count: 2
-    description: "\uC29B5\uD0C0\uC785 \uC18C\uD658\uD615 \uAE30\uCCB41"
+  - obj: {fileID: 7541332325644863474, guid: 68f27e560d09e8a4bbbed14f93d95930, type: 3}
+    count: 50
+    description: "\uD50C\uB808\uC774\uC5B4 \uBC29\uC0AC\uD615 \uCD1D\uC54C"
   - obj: {fileID: 6769099329536944058, guid: 0f230b2be02863142bcaf27e68b7ebde, type: 3}
     count: 2
     description: "\uC29B5\uD0C0\uC785 \uC18C\uD658\uD615 \uAE30\uCCB42"
