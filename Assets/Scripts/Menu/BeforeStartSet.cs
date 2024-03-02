@@ -34,6 +34,7 @@ public class BeforeStartSet : MonoBehaviour
             Menu.gameObject.SetActive(true);
             transform.gameObject.SetActive(false);
         });
+
     }
     /*void ingamescene()
     {

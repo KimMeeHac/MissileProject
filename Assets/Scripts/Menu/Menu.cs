@@ -12,6 +12,8 @@ public class Menu : MonoBehaviour//,IPointerClickHandler
     [SerializeField] Button Option;
     [SerializeField] Canvas beforegameset;
     [SerializeField] Canvas popup;
+    [SerializeField] Canvas option;
+    [SerializeField] Canvas ranking;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,8 @@ public class Menu : MonoBehaviour//,IPointerClickHandler
         });
         Ranking.onClick.AddListener(() =>
         {
-
+            ranking.gameObject.SetActive(true);
+            transform.gameObject.SetActive(false);
         });
         Exit.onClick.AddListener(() =>
         {
@@ -33,7 +36,7 @@ public class Menu : MonoBehaviour//,IPointerClickHandler
             //transform.gameObject.SetActive(false);
 
             PopupUi.Instance.ShowPopup("정말 종료하시겠습니까",
-                () => 
+                () =>
                 {
 #if UNITY_EDITOR//유니티 에디터에서 실행중일때
                     UnityEditor.EditorApplication.isPlaying = false;
@@ -41,11 +44,17 @@ public class Menu : MonoBehaviour//,IPointerClickHandler
                                 Application.Quit();
 #endif
                 }, "종료",
-                () => 
+                () =>
                 {
                     PopupUi.Instance.Close();
                 },
                 "창닫기");
+        });
+        Option.onClick.AddListener(() =>
+        {
+            option.gameObject.SetActive(true);
+            transform.gameObject.SetActive(false);
+
         });
     }
 }

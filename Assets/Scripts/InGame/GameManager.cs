@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     float m_miscooldown=5f;
     bool spawn;
     int bosshp = 10;
-    int unithpx = 0;
+    int unithpx = 1;
     int bosskillcount=0;
     [SerializeField]public bool bossspawn;
     int iRand;

@@ -150,7 +150,8 @@ public class PoolingManager : MonoBehaviour
         Transform parent = transform.Find(_name);
         if (parent == null)
         {
-            Debug.LogError("프리팹에 오브젝트 없음");
+            Debug.LogError($"프리팹에 오브젝트 없음 - {_name}");
+            return null;
         }
         GameObject returnvalue = null;
         if(parent.childCount > 0)
