@@ -17,11 +17,10 @@ public class BeforeStartSet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-       
+        
         Startbutton.onClick.AddListener(()=> {
             if (keymousesetting.IsCheckedButtonOnce() && shoottypesetting.IsCheckedButtonOnce())
-            { 
+            {
                 SceneManager.LoadSceneAsync(1); 
             }
             else

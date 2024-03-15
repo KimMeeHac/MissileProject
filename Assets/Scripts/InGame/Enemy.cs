@@ -60,7 +60,16 @@ public class Enemy : MonoBehaviour
     {
         if (collision.tag == eTag.Player.ToString())
         {
-            RemoveObj();
+
+            if (!isBoss)
+            {
+                RemoveObj();
+            }
+            else
+            {
+                hit();
+
+            }
             player.hit();
         }
     }
