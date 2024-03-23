@@ -137,6 +137,10 @@ public class GameManager : MonoBehaviour
         totalScore += _score;
         Score.text = totalScore.ToString("D5");
     }
+    public int Endscore()
+    {
+        return totalScore;
+    }
     public void Boomlist(bool _use)
     {
         if (boomcount < 3 && !_use)

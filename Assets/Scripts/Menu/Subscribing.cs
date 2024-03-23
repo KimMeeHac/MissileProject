@@ -16,6 +16,7 @@ public class Subscribing : MonoBehaviour
         if (btn < 2)
         {
             keymouse = keymousestring[btn];
+            DataManager.Instance.keytype(btn);
         }
         else
         {

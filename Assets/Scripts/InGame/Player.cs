@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class Player : MonoBehaviour
     [Tooltip("무적시간 조정기능")][SerializeField] float m_invinciTime = 1f;
     [Tooltip("발사 타입")][Range(1, 4)][SerializeField] int m_shootType = 1;
     [Tooltip("발사 단계")][SerializeField][Range(1, 7)] int m_playershootlv = 1;
-
+    [SerializeField] bool keytype;
     SpriteRenderer playerRenderer;
     bool m_invincibile = false;
     float m_invinciTimer = 0f;
@@ -30,8 +31,10 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_shootType = DataManager.Instance.shootforplayer();
+        keytype = DataManager.Instance.keytypeforplayer();
         m_playershootlv = 1;
         Debug.Log(m_shootType);
+        Debug.Log(keytype);
     }
     public void hit()
     {
@@ -46,8 +49,14 @@ public class Player : MonoBehaviour
             m_invincibile = true;
             if (playerHP <= 0)
             {
-                //Debug.Log("체력0 들어옴");
                 Destroy(gameObject);
+                int endscore = GameManager.Instance.Endscore();
+                DataManager.Instance.savescore(endscore);
+                PopupUi.Instance.ShowPopup($"GameOver\n최종점수:{endscore}", () =>
+                {
+                    SceneManager.LoadSceneAsync(0);
+                }, "메인메뉴로");
+                //Debug.Log("체력0 들어옴");
             }
         }
     }
@@ -61,11 +70,53 @@ public class Player : MonoBehaviour
     }
     void moving()
     {
-        float vert = Input.GetAxisRaw("Vertical");
+        float hori=0, vert=0;
+        if (!keytype)
+        {
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                vert = 1f;
+            }
+            if(Input.GetKey(KeyCode.DownArrow)) 
+            { 
+                vert = -1f;
+            }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                hori = 1f;
+            }
+            if(Input .GetKey(KeyCode.LeftArrow))
+            {
+                hori = -1f;
+            }
+            Transform PlayerTrs = GetComponent<Transform>();
+            PlayerTrs.position = PlayerTrs.position + new Vector3(hori, vert) * Time.deltaTime * m_fSpeed;
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                vert = 1f;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                vert = -1f;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                hori = 1f;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                hori = -1f;
+            }
+            Transform PlayerTrs = GetComponent<Transform>();
+            PlayerTrs.position = PlayerTrs.position + new Vector3(hori, vert) * Time.deltaTime * m_fSpeed;
+        }
+        /*float vert = Input.GetAxisRaw("Vertical");
         float hori = Input.GetAxisRaw("Horizontal");
         Transform PlayerTrs = GetComponent<Transform>();
-        PlayerTrs.position = PlayerTrs.position + new Vector3(hori, vert) * Time.deltaTime * m_fSpeed;
-
+        PlayerTrs.position = PlayerTrs.position + new Vector3(hori, vert) * Time.deltaTime * m_fSpeed;*/
     }
     void checkposition()
     {
@@ -123,7 +174,11 @@ public class Player : MonoBehaviour
     }
     void shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Space) &&!keytype)
+        {
+            shootmissile();
+        }
+        if (Input.GetMouseButtonDown(0) && keytype)
         {
             shootmissile();
         }
