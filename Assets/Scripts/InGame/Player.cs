@@ -49,9 +49,10 @@ public class Player : MonoBehaviour
             m_invincibile = true;
             if (playerHP <= 0)
             {
-                Destroy(gameObject);
+                
                 int endscore = GameManager.Instance.Endscore();
                 DataManager.Instance.savescore(endscore);
+                Destroy(gameObject);
                 PopupUi.Instance.ShowPopup($"GameOver\n최종점수:{endscore}", () =>
                 {
                     SceneManager.LoadSceneAsync(0);
