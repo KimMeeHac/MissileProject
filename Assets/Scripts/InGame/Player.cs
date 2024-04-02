@@ -16,12 +16,14 @@ public class Player : MonoBehaviour
     [Tooltip("발사 타입")][Range(1, 4)][SerializeField] int m_shootType = 1;
     [Tooltip("발사 단계")][SerializeField][Range(1, 7)] int m_playershootlv = 1;
     [SerializeField] bool keytype;
+    [SerializeField] GameObject Hpbackground;
+    [SerializeField] Transform Hpbar;
+    [SerializeField] List<GameObject> Hppoint;
     SpriteRenderer playerRenderer;
     bool m_invincibile = false;
     float m_invinciTimer = 0f;
     float missilespeed;
     int m_maxplayershootlv = 7;
-    bool ishit;
     bool a;
     // Start is called before the first frame update
     private void Awake()
@@ -33,6 +35,8 @@ public class Player : MonoBehaviour
         m_shootType = DataManager.Instance.shootforplayer();//총쏘는 타입을 받아옴
         keytype = DataManager.Instance.keytypeforplayer();//키마 or only키보드 타입 받아옴
         m_playershootlv = 1;
+        Hppoint = new List<GameObject>();
+        //Hppoint.Add(transform.);
         /*Debug.Log(m_shootType);
         Debug.Log(keytype);*/
     }
@@ -167,6 +171,7 @@ public class Player : MonoBehaviour
         if (playerHP < 5)
         {
             playerHP++;
+            Instantiate(Hppoint, Hpbar);
         }
         else
         {
