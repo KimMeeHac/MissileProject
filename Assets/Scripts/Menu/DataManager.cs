@@ -26,19 +26,19 @@ public class DataManager : MonoBehaviour
     {
         DontDestroyOnLoad(this);
     }
-    public void shoottype(int _shoottype)
+    public void shoottype(int _shoottype)//발사 타입을 받아옴
     {
        shootty=_shoottype+1;
     }
-    public int shootforplayer()
+    public int shootforplayer()//플레이어 시작할때 호출받아서 전달
     {
         return shootty;
     }
-    public void keytype(int _keytype)
+    public void keytype(int _keytype)//조작 타입 받아옴
     {
         keytypeset = Convert.ToBoolean(_keytype);
     }
-    public bool keytypeforplayer()
+    public bool keytypeforplayer()//게임 시작시 호출받아서 받아옴
     {
         return keytypeset;
     }

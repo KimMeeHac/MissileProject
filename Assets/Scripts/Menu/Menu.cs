@@ -22,12 +22,12 @@ public class Menu : MonoBehaviour//,IPointerClickHandler
         {
             beforegameset.gameObject.SetActive(true);
             transform.gameObject.SetActive(false);
-        });
+        });//스타트 버튼 누를시 게임 시작 설정 화면 활성화 및 기존 화면 비활성화
         Ranking.onClick.AddListener(() =>
         {
             ranking.gameObject.SetActive(true);
             transform.gameObject.SetActive(false);
-        });
+        });//랭킹 버튼 누를시 랭킹 화면 활성화 및 기존 화면 비활성화
         Exit.onClick.AddListener(() =>
         {
 
@@ -49,7 +49,7 @@ public class Menu : MonoBehaviour//,IPointerClickHandler
                     PopupUi.Instance.Close();
                 },
                 "창닫기");
-        });
+        });//게임 종료 버튼 누를시 팝업창 띄우기
         Option.onClick.AddListener(() =>
         {
             option.gameObject.SetActive(true);

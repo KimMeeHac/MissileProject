@@ -19,7 +19,7 @@ public class BeforeStartSet : MonoBehaviour
     {
         
         Startbutton.onClick.AddListener(()=> {
-            if (keymousesetting.IsCheckedButtonOnce() && shoottypesetting.IsCheckedButtonOnce())
+            if (keymousesetting.IsCheckedButtonOnce() && shoottypesetting.IsCheckedButtonOnce())//조작타입과 발사타입을 동시에 선택했을때만 화면이 넘어가도록
             {
                 SceneManager.LoadSceneAsync(1); 
             }
@@ -32,17 +32,13 @@ public class BeforeStartSet : MonoBehaviour
         {
             Menu.gameObject.SetActive(true);
             transform.gameObject.SetActive(false);
-        });
+        });//메인화면으로 되돌아가기
 
     }
     /*void ingamescene()
     {
          SceneManager.LoadSceneAsync(1);
     }*/
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
 }

@@ -49,17 +49,17 @@ public class PopupUi : MonoBehaviour
 //        });
     }
 
-    public void ShowPopup(string _popupText, UnityAction _yes = null, string _yesBtnName = "",  UnityAction _no = null, string _noBtnName = "")
+    public void ShowPopup(string _popupText, UnityAction _yes = null, string _yesBtnName = "",  UnityAction _no = null, string _noBtnName = "")//팝업 화면 띄우기
     {
         scripttext.text = _popupText;
-        if(_yes != null) 
+        if(_yes != null) //예스 버튼을 누르는경우 예스 버튼의 이름을 지정하고, 이때 무슨 기능을 하는지 
         {
             yesbtn.onClick.AddListener(_yes);
             yesbtnName.text = _yesBtnName;
         }
         yesbtn.gameObject.SetActive(_yes != null);
 
-        if(_no != null) 
+        if(_no != null) //노 버튼을 누르는 경우 노 버튼의 이름을 지정하고, 이 팝업창이 닫히게 되도록 기능
         {
             nobtn.onClick.AddListener(_no);
             nobtnName.text = _noBtnName;
@@ -69,7 +69,7 @@ public class PopupUi : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Close()
+    public void Close()//닫기 버튼을 누르는 경우
     {
         gameObject.SetActive(false);
         scripttext.text = string.Empty;

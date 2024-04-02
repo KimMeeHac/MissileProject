@@ -31,18 +31,17 @@ public class Enemy : MonoBehaviour
     int shoottime = 0;
     public int point = 0;
     Player player;
-    private void OnBecameInvisible()
+    private void OnBecameInvisible()//맵에서 사라지면 제거되도록
     {
         RemoveObj();
     }
-    void RemoveObj()
+    void RemoveObj()//오브젝트를 다시 풀링매니저에 돌려놓는 기능
     {
         if (PoolingManager.Instance != null)
         {
             PoolingManager.Instance.RemovePoolingObject(gameObject);
         }
     }
-    // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
@@ -56,16 +55,16 @@ public class Enemy : MonoBehaviour
         playpos = GameObject.FindWithTag("Player").transform;
         trsDynamic = GameObject.Find("DynamicObj").transform;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)//부딫히는 경우
     {
-        if (collision.tag == eTag.Player.ToString())
+        if (collision.tag == eTag.Player.ToString())//플레이어인 경우에만 작동하도록
         {
 
-            if (!isBoss)
+            if (!isBoss)//일반 몹인경우
             {
                 RemoveObj();
             }
-            else
+            else//보스인경우
             {
                 hit();
 
@@ -73,15 +72,15 @@ public class Enemy : MonoBehaviour
             player.hit();
         }
     }
-    public void hit()
+    public void hit()//피격시
     {
         //Debug.Log("피 깎임");
         m_fHp--;
-        if (m_fHp <= 0)
+        if (m_fHp <= 0)//체력이 0이 되면
         {
             int itemlist=Random.Range((int)PoolingManager.ePoolingObject.Follower, (int)PoolingManager.ePoolingObject.MinionA);
             
-            if (!isBoss)
+            if (!isBoss)//보스가 아닌경우 점수 올라가고 보스 소환 카운트가 증가하며 아이템 보유 몹인 경우 아이템을 만든다.
             {
                 GameManager.Instance.Scoretext(point);
                 GameManager.Instance.bosscount();
@@ -93,7 +92,7 @@ public class Enemy : MonoBehaviour
                     item.GetComponent<Itemlist>().pos(transform.position);
                 }
             }
-            else if (isBoss&&!alreadydeath)
+            else if (isBoss&&!alreadydeath)//보스인경우 + 여러발을 맞춰서 여러번 호출되는 기능 방지
             {
                 alreadydeath = true;
                 Debug.Log("보스 아이템 생성");
@@ -112,7 +111,11 @@ public class Enemy : MonoBehaviour
     void checkbossspawn()
     {
         bool spawnbosscheck = GameManager.Instance.bossspawn;
-        if(spawnbosscheck&&!isBoss) RemoveObj();
+        if (spawnbosscheck && !isBoss)
+        {
+            RemoveObj();
+        }
+
     }
     void movingandshoot()
     {
@@ -125,11 +128,11 @@ public class Enemy : MonoBehaviour
             //StartCoroutine(Shootenemymov());
             //코루틴 사용시 update에 넣지 않도록 조치->렉 이슈 생김
             m_timer += Time.deltaTime;
-            startmoving();
-            if (m_timer > 2f)
+            startmoving();//시작무빙 함수 호출
+            if (m_timer > 2f)//특정 시간이 지나면 총을쏘도록
             {
                 shoot();
-                if (m_timer > 3f)
+                if (m_timer > 3f)//특정시간이 지나면 옆으로 이동하도록
                 {
 
                     sidemoving();
@@ -155,7 +158,7 @@ public class Enemy : MonoBehaviour
     {
         if (firstmov)//처음 움직이는지 확인
         {
-            if (isBoss)
+            if (isBoss)//보스인경우
             {
                 m_fRatioY += Time.deltaTime;
                 if (m_fRatioY > 1.5f)//시간 지나면 움직임 멈추게
@@ -181,7 +184,7 @@ public class Enemy : MonoBehaviour
     }
     void shoot()
     {
-        if (isBoss)
+        if (isBoss)//보스의 총 패턴
         {
             if (patternchange)//패턴채인지가 켜지는 경우 패턴 변경
             {
@@ -286,9 +289,9 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    void sidemoving()
+    void sidemoving()//옆으로 움직이는 함수
     {
-        if (isBoss)
+        if (isBoss)//보스인경우 왔다갔다 하는 기능
         {
             Vector3 currentpos = Camera.main.WorldToViewportPoint(transform.position);
             if (isrightmov)
@@ -308,7 +311,7 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-        else
+        else//일반 몹인경우 오른쪽 혹은 왼쪽으로 빠지도록
         {
             if (m_fStartingPos.x > 0f)
             {

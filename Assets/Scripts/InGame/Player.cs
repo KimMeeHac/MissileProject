@@ -30,33 +30,33 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        m_shootType = DataManager.Instance.shootforplayer();
-        keytype = DataManager.Instance.keytypeforplayer();
+        m_shootType = DataManager.Instance.shootforplayer();//총쏘는 타입을 받아옴
+        keytype = DataManager.Instance.keytypeforplayer();//키마 or only키보드 타입 받아옴
         m_playershootlv = 1;
-        Debug.Log(m_shootType);
-        Debug.Log(keytype);
+        /*Debug.Log(m_shootType);
+        Debug.Log(keytype);*/
     }
     public void hit()
     {
         //Debug.Log("히트 함수안 들어옴");
-        if (m_invincibile)
+        if (m_invincibile)//무적시간동안 체력 닳지 않도록
         {
             return;
         }
         else
         {
-            playerHP--;
-            m_invincibile = true;
+            playerHP--;//체력감소
+            m_invincibile = true;//무적기능 켜짐
             if (playerHP <= 0)
             {
                 
-                int endscore = GameManager.Instance.Endscore();
-                DataManager.Instance.savescore(endscore);
-                Destroy(gameObject);
+                int endscore = GameManager.Instance.Endscore();//최종점수를 전달
+                DataManager.Instance.savescore(endscore);//최종점수 저장
+                Destroy(gameObject);//파괴
                 PopupUi.Instance.ShowPopup($"GameOver\n최종점수:{endscore}", () =>
                 {
                     SceneManager.LoadSceneAsync(0);
-                }, "메인메뉴로");
+                }, "메인메뉴로");//게임오버 팝업
                 //Debug.Log("체력0 들어옴");
             }
         }
@@ -69,10 +69,10 @@ public class Player : MonoBehaviour
         invincible();//피격시 무적기능
         shoot();//발사 기능
     }
-    void moving()
+    void moving()//움직이는 기능
     {
         float hori=0, vert=0;
-        if (!keytype)
+        if (!keytype)//키보드만 쓸 경우
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
             Transform PlayerTrs = GetComponent<Transform>();
             PlayerTrs.position = PlayerTrs.position + new Vector3(hori, vert) * Time.deltaTime * m_fSpeed;
         }
-        else
+        else//키마 쓰는경우
         {
             if (Input.GetKey(KeyCode.W))
             {
@@ -142,7 +142,7 @@ public class Player : MonoBehaviour
     }
     void invincible()//피격시 무적
     {
-        if (!m_invincibile)
+        if (!m_invincibile)//무적켜져있는경우 바로 리턴
         {
             return;
         }
@@ -191,7 +191,7 @@ public class Player : MonoBehaviour
         {
             m_playershootlv = m_maxplayershootlv;
         }
-        switch (m_shootType)//총쏘는 타입1~5까지
+        switch (m_shootType)//총쏘는 타입1~4까지
         {
             case 1://1타입 직선형
                 {
