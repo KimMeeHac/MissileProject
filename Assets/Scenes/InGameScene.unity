@@ -1701,7 +1701,10 @@ MonoBehaviour:
   keytype: 0
   Hpbackground: {fileID: 1827399024}
   Hpbar: {fileID: 1558045730}
-  Hppoint: {fileID: 451710038289670950, guid: 95fbc2fcd1a43404b838b20786f96301, type: 3}
+  Hppoint:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!95 &1330883257
 Animator:
   serializedVersion: 5

@@ -51,14 +51,15 @@ public class Ranking : MonoBehaviour
             ranklist.AddRange(score.score);
             for (int i = 0; i < Rankinglist.Count; i++) //json 파일의 순서를 랭킹 순서와 연동시킨다.
             {
-                if (ranklist[i] == null)
+                /*if (ranklist[i]==null)
                 {
                     Rankinglist[i].text = "00000";
                 }
                 else
                 {
                     Rankinglist[i].text = ranklist[i].ToString("D5");
-                }
+                }*/
+                Rankinglist[i].text = ranklist[i].ToString("D5");
             }
         }
         

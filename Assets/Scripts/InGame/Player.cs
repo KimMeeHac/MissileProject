@@ -37,8 +37,6 @@ public class Player : MonoBehaviour
         m_playershootlv = 1;
         Hppoint = new List<GameObject>();
         //Hppoint.Add(transform.);
-        /*Debug.Log(m_shootType);
-        Debug.Log(keytype);*/
     }
     public void hit()
     {
@@ -72,6 +70,7 @@ public class Player : MonoBehaviour
         checkposition();//유저가 화면 안에서 있게하는기능
         invincible();//피격시 무적기능
         shoot();//발사 기능
+        hppointposition();
     }
     void moving()//움직이는 기능
     {
@@ -171,7 +170,7 @@ public class Player : MonoBehaviour
         if (playerHP < 5)
         {
             playerHP++;
-            Instantiate(Hppoint, Hpbar);
+            //Instantiate(Hppoint, Hpbar);
         }
         else
         {
@@ -295,5 +294,10 @@ public class Player : MonoBehaviour
                 }
                 break;
         }
+    }
+    void hppointposition()
+    {
+        Transform plytrs = GetComponent<Transform>();
+        Hpbackground.transform.position = new Vector3(180*(plytrs.position.x/3),960+ ((plytrs.position.y/12*960)));
     }
 }
