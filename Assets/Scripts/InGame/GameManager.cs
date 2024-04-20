@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [SerializeField] List<GameObject> m_listEnemy;
+    [SerializeField] public List<GameObject> m_listEnemy;
     [SerializeField] List<GameObject> m_listItem;
     [SerializeField] GameObject m_objBoss;
     [SerializeField] GameObject m_objPlayer;
@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour
     float m_misspeed=3f;
     float m_miscooldown=5f;
     bool spawn;
-    int bosshp = 10;
-    int unithpx = 1;
+    public int bosshp = 10;
+    public int unithpx = 1;
     int bosskillcount=0;
     [SerializeField]public bool bossspawn;
     int iRand;
@@ -47,8 +47,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         spawnLv = 2f;
-        spawnaxis.x = Camera.main.ViewportToWorldPoint(new Vector3(0.15f, 0f)).x;//몹 스폰 왼쪽 한계선
-        spawnaxis.y = Camera.main.ViewportToWorldPoint(new Vector3(0.85f, 0f)).x;//몹 스폰 오른쪽 한계선
+        Camera maincamera = Camera.main;
+        spawnaxis.x = maincamera.ViewportToWorldPoint(new Vector3(0.15f, 0f)).x;//몹 스폰 왼쪽 한계선
+        spawnaxis.y = maincamera.ViewportToWorldPoint(new Vector3(0.85f, 0f)).x;//몹 스폰 오른쪽 한계선
     }
 
     // Update is called once per frame
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
             iRand = Random.Range(0, m_listEnemy.Count);//어떤 몹을 소환하는지 0~?까지
             string findname = m_listEnemy[iRand].name;//그 몹의 이름
             GameObject objenemy = PoolingManager.Instance.CreateObj(findname, dynamicobj);//풀링으로 몹 생성
-            objenemy.GetComponent<Enemy>().m_fHp *= unithpx;
+            //objenemy.GetComponent<Enemy>().m_fHp *= unithpx;
             objenemy.GetComponent<Enemy>().point = iRand + 1;
             objenemy.transform.position = new Vector3(Random.Range(spawnaxis.x, spawnaxis.y), 6f);//몹 생성 위치
             droprate = Random.Range(0.0f, 100.0f);//아이템 드랍할 몹 생성 확률
@@ -100,7 +101,7 @@ public class GameManager : MonoBehaviour
             spawncount = 0;
             bossspawn = true;
             GameObject objboss = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Enemy_Boss, dynamicobj);
-            objboss.GetComponent<Enemy>().m_fHp = bosshp;
+            //objboss.GetComponent<Enemy>().m_fHp = bosshp;
             objboss.GetComponent<Enemy>().m_bossmissilespeed = m_misspeed;
             objboss.GetComponent<Enemy>().m_bosspattern = m_miscooldown;
             objboss.transform.position = new Vector3(0f, 4f);

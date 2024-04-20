@@ -54,6 +54,7 @@ public class Enemy : MonoBehaviour
         m_fStartingPos = transform.position;
         playpos = GameObject.FindWithTag("Player").transform;
         trsDynamic = GameObject.Find("DynamicObj").transform;
+        m_fHp = m_fHp * GameManager.Instance.unithpx + (isBoss ? GameManager.Instance.bosshp : 0);
     }
     private void OnTriggerEnter2D(Collider2D collision)//부딫히는 경우
     {

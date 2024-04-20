@@ -16,15 +16,19 @@ public class Player : MonoBehaviour
     [Tooltip("발사 타입")][Range(1, 4)][SerializeField] int m_shootType = 1;
     [Tooltip("발사 단계")][SerializeField][Range(1, 7)] int m_playershootlv = 1;
     [SerializeField] bool keytype;
-    [SerializeField] GameObject Hpbackground;
+    [SerializeField] Transform Hpbackground;
     [SerializeField] Transform Hpbar;
-    [SerializeField] List<GameObject> Hppoint;
+    [SerializeField] GameObject Hppoint;
+    [SerializeField] List<GameObject> hppointlist = new List<GameObject>();
     SpriteRenderer playerRenderer;
     bool m_invincibile = false;
     float m_invinciTimer = 0f;
     float missilespeed;
     int m_maxplayershootlv = 7;
+    int maxplayerhp = 5;
     bool a;
+
+    Camera mainCam;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -35,8 +39,11 @@ public class Player : MonoBehaviour
         m_shootType = DataManager.Instance.shootforplayer();//총쏘는 타입을 받아옴
         keytype = DataManager.Instance.keytypeforplayer();//키마 or only키보드 타입 받아옴
         m_playershootlv = 1;
-        Hppoint = new List<GameObject>();
-        //Hppoint.Add(transform.);
+        for (int i = 0; i < maxplayerhp; i++)
+        {
+            hppointlist.Add(Instantiate(Hppoint, Hpbar));
+        }
+        mainCam = Camera.main;
     }
     public void hit()
     {
@@ -47,11 +54,11 @@ public class Player : MonoBehaviour
         }
         else
         {
-            playerHP--;//체력감소
             m_invincibile = true;//무적기능 켜짐
+            
+            playerHP--;
             if (playerHP <= 0)
             {
-                
                 int endscore = GameManager.Instance.Endscore();//최종점수를 전달
                 DataManager.Instance.savescore(endscore);//최종점수 저장
                 Destroy(gameObject);//파괴
@@ -61,9 +68,15 @@ public class Player : MonoBehaviour
                 }, "메인메뉴로");//게임오버 팝업
                 //Debug.Log("체력0 들어옴");
             }
+            else
+            {
+                hppointlistchange(false);
+            }
+                
+            
         }
     }
-    // Update is called once per frame
+
     void Update()
     {
         moving();//유저가 움직이는 기능
@@ -74,22 +87,22 @@ public class Player : MonoBehaviour
     }
     void moving()//움직이는 기능
     {
-        float hori=0, vert=0;
+        float hori = 0, vert = 0;
         if (!keytype)//키보드만 쓸 경우
         {
             if (Input.GetKey(KeyCode.UpArrow))
             {
                 vert = 1f;
             }
-            if(Input.GetKey(KeyCode.DownArrow)) 
-            { 
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
                 vert = -1f;
             }
             if (Input.GetKey(KeyCode.RightArrow))
             {
                 hori = 1f;
             }
-            if(Input .GetKey(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.LeftArrow))
             {
                 hori = -1f;
             }
@@ -165,21 +178,9 @@ public class Player : MonoBehaviour
     {
         m_playershootlv++;
     }
-    public void hpup()
-    {
-        if (playerHP < 5)
-        {
-            playerHP++;
-            //Instantiate(Hppoint, Hpbar);
-        }
-        else
-        {
-            Debug.Log("풀피");
-        }
-    }
     void shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Space) &&!keytype)
+        if (Input.GetKeyDown(KeyCode.Space) && !keytype)
         {
             shootmissile();
         }
@@ -255,7 +256,7 @@ public class Player : MonoBehaviour
                     {
                         missilespeed = UnityEngine.Random.Range(1.5f + i / 7, 3f);
                         GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
-                        obj.GetComponent<Missile>().checkguided( m_objBarrel.transform.position, missilespeed);
+                        obj.GetComponent<Missile>().checkguided(m_objBarrel.transform.position, missilespeed);
                     }
                 }
                 break;
@@ -286,7 +287,7 @@ public class Player : MonoBehaviour
                                 {
                                     missilespeed = UnityEngine.Random.Range(2.5f, 3f);
                                     GameObject obj4 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
-                                    obj4.GetComponent<Missile>().checkguided( m_objBarrel.transform.position, missilespeed);
+                                    obj4.GetComponent<Missile>().checkguided(m_objBarrel.transform.position, missilespeed);
                                 }
                             }
                         }
@@ -295,9 +296,67 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-    void hppointposition()
+    void hppointposition()//월드와 캔버스를 연동할때는 카메라를 이용
     {
-        Transform plytrs = GetComponent<Transform>();
-        Hpbackground.transform.position = new Vector3(180*(plytrs.position.x/3),960+ ((plytrs.position.y/12*960)));
+        Hpbackground.transform.position = mainCam.WorldToScreenPoint(transform.position) - new Vector3(0, 100);
     }
+    public void hppointlistchange(bool up)//active 기능을 활용할 것
+    {
+        /*Debug.Log("hppointlistchange들어옴 " + hppointlist.Count);
+
+        //hppointlist 와 기존에 있던 hppoint 숫자와 다를때 list만큼 hppoint갯수를 파괴하거나 생성하는 스크립트 생성하기
+        if (up == true)//체력 추가시 리스트 추가
+        {
+            if (hppointlist.Count < 5)
+            {
+                Debug.Log("hp 추가됨");
+                hppointlist.Add(Instantiate(Hppoint, Hpbar));
+            }
+        }
+        else//체력 감소시 리스트 삭제
+        {
+            hppointlist.Remove(Hppoint);
+            if (hppointlist.Count <= 0)
+            {
+
+            }
+        }
+        setHpUi();
+        //for (int i = 0; i < maxplayerhp; i++)//5번 돌림(최대체력이 5이기 때문)
+        //{
+        //    if (hppointlist[i] == null)
+        //    {
+        //        break;
+        //    }
+        //    if (hppointlist.Count > i && hppointlist[i] != null)//hppointlist와 i를 비교 list의 크기가 크면 생성하는데 이때 hppointlist의 gameobject가 없어야함
+        //    {
+        //        Debug.Log("if문 들어옴");
+        //        Instantiate(hppointlist[i], Hpbar);
+        //    }
+        //}*/
+        if (up)//체력 올라갈시
+        {
+            if (playerHP < 5)//최대 체력보다 작을 시
+            {
+                playerHP++;
+                hppointlist[playerHP - 1].SetActive(true);
+            }
+
+        }
+        else//체력이 내려갈 시
+        {
+                hppointlist[playerHP].SetActive(false);
+        }
+
+    }
+
+    /*private void setHpUi()
+    {
+        int count = hppointlist.Count;
+        for (int iNum = 0; iNum < count; ++iNum)
+        {
+            hppointlist[iNum].SetActive(iNum + 1 <= playerHP);
+        }
+        
+    }*/
 }
