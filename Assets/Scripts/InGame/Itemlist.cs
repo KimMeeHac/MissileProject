@@ -64,19 +64,19 @@ public class Itemlist : MonoBehaviour
     void checkPos()
     {
         Vector3 curPos = Camera.main.WorldToViewportPoint(transform.position);
-        if (curPos.x < 0.01f)//왼쪽 도달시
+        if (curPos.x < 0.01f&&m_moveItemPos.x< 0)//왼쪽 도달시 위치가 음수이면서 x벡터 방향이 음수일때만 작동하게
         {
             m_moveItemPos = Vector3.Reflect(m_moveItemPos, Vector3.left);
         }
-        else if (curPos.x > 0.99f)//오른쪽 도달시
+        else if (curPos.x > 0.99f && m_moveItemPos.x > 0)//오른쪽 도달시 위치가 양수이면서 x벡터 방향이 양수일때만 작동
         {
             m_moveItemPos = Vector3.Reflect(m_moveItemPos, Vector3.right);
         }
-        if (curPos.y < 0.01f)//아래쪽 도달시
+        if (curPos.y < 0.01f && m_moveItemPos.y < 0)//아래쪽 도달시 위치가 음수이면서 y벡터 방향이 음수일때만 
         {
             m_moveItemPos = Vector3.Reflect(m_moveItemPos, Vector3.down);
         }
-        else if (curPos.y > 0.99f)//위쪽 도달시
+        else if (curPos.y > 0.99f && m_moveItemPos.y > 0)//위쪽 도달시 위치가 양수이면서 y벡터 방향이 양수일때만
         {
             m_moveItemPos = Vector3.Reflect(m_moveItemPos, Vector3.up);
         }

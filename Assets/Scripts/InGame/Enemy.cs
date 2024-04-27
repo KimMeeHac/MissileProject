@@ -39,6 +39,12 @@ public class Enemy : MonoBehaviour
     {
         if (PoolingManager.Instance != null)
         {
+            if (isBoss || isshoot)
+            {
+                firstmov = true;
+                isrightmov = false ;
+                m_fRatioY = 0f;
+            }
             PoolingManager.Instance.RemovePoolingObject(gameObject);
         }
     }
@@ -54,7 +60,6 @@ public class Enemy : MonoBehaviour
         m_fStartingPos = transform.position;
         playpos = GameObject.FindWithTag("Player").transform;
         trsDynamic = GameObject.Find("DynamicObj").transform;
-        m_fHp += GameManager.Instance.gamelevel + (isBoss ? GameManager.Instance.gamelevel*10 : 0);
     }
     private void OnTriggerEnter2D(Collider2D collision)//부딫히는 경우
     {

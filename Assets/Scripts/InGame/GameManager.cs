@@ -20,18 +20,26 @@ public class GameManager : MonoBehaviour
     Vector3 spawnaxis;
     float m_fTimer;
     float spawnLv;
-    float m_misspeed=3f;
-    float m_miscooldown=5f;
+    float m_misspeed = 3f;
+    float m_miscooldown = 5f;
     bool spawn;
     public int gamelevel = 1;
-    int bosskillcount=0;
-    [SerializeField]public bool bossspawn;
+    int bosskillcount = 0;
+    [SerializeField] public bool bossspawn;
     int iRand;
     int totalScore;
     float droprate;
     public int boomcount = 0;
-    [SerializeField]int spawncount = 0;
+    [SerializeField] int spawncount = 0;
     [Tooltip("몹 스폰 시간")][SerializeField] float m_spawnTime = 1f;
+
+    private void OnValidate()
+    {
+        if (Application.isPlaying == false) return;
+
+        Boomlist(0);
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -50,7 +58,7 @@ public class GameManager : MonoBehaviour
         Camera maincamera = Camera.main;
         spawnaxis.x = maincamera.ViewportToWorldPoint(new Vector3(0.15f, 0f)).x;//몹 스폰 왼쪽 한계선
         spawnaxis.y = maincamera.ViewportToWorldPoint(new Vector3(0.85f, 0f)).x;//몹 스폰 오른쪽 한계선
-        boomlist= new List<GameObject>();
+        boomlist = new List<GameObject>();
         for (int i = 0; i < 3; i++)
         {
             boomlist.Add(Instantiate(boomicon, Boomgroup));
@@ -81,7 +89,7 @@ public class GameManager : MonoBehaviour
             iRand = Random.Range(0, m_listEnemy.Count);//어떤 몹을 소환하는지 0~?까지
             string findname = m_listEnemy[iRand].name;//그 몹의 이름
             GameObject objenemy = PoolingManager.Instance.CreateObj(findname, dynamicobj);//풀링으로 몹 생성
-            //objenemy.GetComponent<Enemy>().m_fHp *= unithpx;
+            objenemy.GetComponent<Enemy>().m_fHp = (gamelevel - 1) * 2 + (iRand + 1);
             objenemy.GetComponent<Enemy>().point = iRand + 1;
             objenemy.transform.position = new Vector3(Random.Range(spawnaxis.x, spawnaxis.y), 6f);//몹 생성 위치
             droprate = Random.Range(0.0f, 100.0f);//아이템 드랍할 몹 생성 확률
@@ -108,6 +116,7 @@ public class GameManager : MonoBehaviour
             bossspawn = true;
             GameObject objboss = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Enemy_Boss, dynamicobj);
             //objboss.GetComponent<Enemy>().m_fHp = bosshp;
+            objboss.GetComponent<Enemy>().m_fHp = gamelevel * 11;
             objboss.GetComponent<Enemy>().m_bossmissilespeed = m_misspeed;
             objboss.GetComponent<Enemy>().m_bosspattern = m_miscooldown;
             objboss.transform.position = new Vector3(0f, 4f);
@@ -149,7 +158,7 @@ public class GameManager : MonoBehaviour
     }
     public void Boomlist(int _use)
     {
-        
+        if (boomlist == null) return;
         boomcount = boomcount + _use;
         if (boomcount < 0)
         {
@@ -173,7 +182,8 @@ public class GameManager : MonoBehaviour
                 boomcount = boomcount + _use;
             }
         }*/
-        for(int i = 0; i < 3; i++)
+        int count = boomlist.Count;
+        for (int i = 0; i < count; i++)
         {
             /*if (i < boomcount)
             {
@@ -183,8 +193,8 @@ public class GameManager : MonoBehaviour
             {
                 boomlist[i].SetActive(false);
             }*/
-            boomlist[i].SetActive(i<boomcount);
+            boomlist[i].SetActive(i < boomcount);
         }
-      
+
     }
 }

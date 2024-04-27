@@ -91,9 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: 1
-  guided: 0
+  guided: 1
   enemys: 0
   bosses: 0
+  missileobj: {fileID: 4063028733599780897}
 --- !u!1 &4063028733599780897
 GameObject:
   m_ObjectHideFlags: 0

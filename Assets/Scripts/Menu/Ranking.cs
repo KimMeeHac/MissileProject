@@ -49,17 +49,19 @@ public class Ranking : MonoBehaviour
             DataManager.Endscore score = new DataManager.Endscore();
             score = JsonUtility.FromJson<DataManager.Endscore>(rank);
             ranklist.AddRange(score.score);
-            for (int i = 0; i < Rankinglist.Count; i++) //json 파일의 순서를 랭킹 순서와 연동시킨다.
+            int listCount = Rankinglist.Count;
+            int saveJsonListCount = ranklist.Count;
+            for (int i = 0; i < listCount; i++) //json 파일의 순서를 랭킹 순서와 연동시킨다.
             {
-                /*if (ranklist[i]==null)
+                if (i >= saveJsonListCount)
                 {
                     Rankinglist[i].text = "00000";
                 }
                 else
                 {
                     Rankinglist[i].text = ranklist[i].ToString("D5");
-                }*/
-                Rankinglist[i].text = ranklist[i].ToString("D5");
+                }
+                //Rankinglist[i].text = ranklist[i].ToString("D5");
             }
         }
         

@@ -9,6 +9,7 @@ public class Boom : MonoBehaviour
     float timer;
     [SerializeField] int boomspeed;
     bool limiter=false;
+    bool isstop = false;
     void Start()
     {
         timer=0;
@@ -22,7 +23,7 @@ public class Boom : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag ==eTag.Enemy.ToString())
+        if(collision.tag ==eTag.Enemy.ToString()||collision.tag==eTag.Boss.ToString())
         {
             Enemy target=collision.GetComponent<Enemy>();
             target.hit(Boomdamage);
@@ -54,7 +55,16 @@ public class Boom : MonoBehaviour
     }
     void Update()
     {
-        transform.position += transform.up*boomspeed*Time.deltaTime;
+        if (isstop == false)
+        {
+            transform.position += transform.up*boomspeed*Time.deltaTime;
+
+        }
         spawntime();
+    }
+
+    void stopmoving()
+    {
+        isstop = true;
     }
 }

@@ -190,6 +190,10 @@ public class Player : MonoBehaviour
         {
             shootboom();
         }
+        if (Input.GetKeyDown(KeyCode.LeftAlt))//치트,폭탄을 생성함
+        {
+            GameManager.Instance.Boomlist(1);
+        }
     }
     void shootmissile()
     {
@@ -378,13 +382,19 @@ public class Player : MonoBehaviour
                 obj2.GetComponent<Boom>().checkposition(m_objBarrel.transform.position);
                 break;
             case 3://왼쪽부터 차례대로 나오도록 조치(아직 미구현)
-                for(int i = 0; i < 6; i++)
-                {
-                   GameObject obj3 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom3, m_dynamicObj);
-                   obj3.GetComponent<Boom>().boomdamage(boomcount);
-                   obj3.GetComponent<Boom>().checkposition(new Vector3(-2.5f + (i * 1), -13f, 0));
-                }
+                StartCoroutine(shootBoom3());
                 break;
+        }
+    }
+
+    IEnumerator shootBoom3()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            GameObject obj3 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom3, m_dynamicObj);
+            obj3.GetComponent<Boom>().boomdamage(3);
+            obj3.GetComponent<Boom>().checkposition(new Vector3(-2.5f + (i * 1), -13f, 0));
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
