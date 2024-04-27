@@ -25,7 +25,7 @@ public class Damage : MonoBehaviour
         {
             //Debug.Log("내 미사일 맞음");
             Enemy target = collision.GetComponent<Enemy>();
-            target.hit();
+            target.hit(1);
             if(guided)mis.RemoveObj();
             else mis2.RemoveObj();
             

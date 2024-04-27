@@ -492,7 +492,10 @@ MonoBehaviour:
   BestScore: {fileID: 366558515}
   Boomgroup: {fileID: 255485847}
   boomicon: {fileID: 2061006023484023509, guid: bfbb666ff4c7f20419581b61d0efb2da, type: 3}
+  bosshp: 10
+  unithpx: 1
   bossspawn: 0
+  boomcount: 0
   spawncount: 0
   m_spawnTime: 1
 --- !u!1 &705507993

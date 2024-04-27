@@ -16,20 +16,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI BestScore;
     [SerializeField] Transform Boomgroup;
     [SerializeField] GameObject boomicon;
+    List<GameObject> boomlist;
     Vector3 spawnaxis;
     float m_fTimer;
     float spawnLv;
     float m_misspeed=3f;
     float m_miscooldown=5f;
     bool spawn;
-    public int bosshp = 10;
-    public int unithpx = 1;
+    public int gamelevel = 1;
     int bosskillcount=0;
     [SerializeField]public bool bossspawn;
     int iRand;
     int totalScore;
     float droprate;
-    int boomcount = 0;
+    public int boomcount = 0;
     [SerializeField]int spawncount = 0;
     [Tooltip("몹 스폰 시간")][SerializeField] float m_spawnTime = 1f;
     private void Awake()
@@ -50,6 +50,12 @@ public class GameManager : MonoBehaviour
         Camera maincamera = Camera.main;
         spawnaxis.x = maincamera.ViewportToWorldPoint(new Vector3(0.15f, 0f)).x;//몹 스폰 왼쪽 한계선
         spawnaxis.y = maincamera.ViewportToWorldPoint(new Vector3(0.85f, 0f)).x;//몹 스폰 오른쪽 한계선
+        boomlist= new List<GameObject>();
+        for (int i = 0; i < 3; i++)
+        {
+            boomlist.Add(Instantiate(boomicon, Boomgroup));
+            boomlist[i].SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -124,8 +130,7 @@ public class GameManager : MonoBehaviour
                 m_miscooldown = 1.5f;
             }
         }
-        bosshp += 10;
-        unithpx += 1;
+        gamelevel += 1;
         spawnLv -= 0.1f;
         if (spawnLv <= 0f)
         {
@@ -142,16 +147,43 @@ public class GameManager : MonoBehaviour
     {
         return totalScore;
     }
-    public void Boomlist(bool _use)
+    public void Boomlist(int _use)
     {
-        if (boomcount < 3 && !_use)
+        
+        boomcount = boomcount + _use;
+        if (boomcount < 0)
         {
-            boomcount++;
-            Instantiate(boomicon, Boomgroup);
+            boomcount = 0;
         }
-        else if (boomcount > 0 && _use)
+        else if (boomcount > 3)
         {
-            boomcount--;
+            boomcount = 3;
+        }
+        /*if ()
+        {
+            if (boomcount < 3)
+            {
+                boomcount++;
+            }
+        }
+        else
+        {
+            if (boomcount > 0)
+            {
+                boomcount = boomcount + _use;
+            }
+        }*/
+        for(int i = 0; i < 3; i++)
+        {
+            /*if (i < boomcount)
+            {
+                boomlist[i].SetActive(true);
+            }
+            else
+            {
+                boomlist[i].SetActive(false);
+            }*/
+            boomlist[i].SetActive(i<boomcount);
         }
       
     }

@@ -22,7 +22,7 @@ public class Itemlist : MonoBehaviour
         if (collision.tag == eTag.Player.ToString())
         {
             if (transform.name =="Item Boom") {
-                GameManager.Instance.Boomlist(false);
+                GameManager.Instance.Boomlist(1);
                 Debug.Log("boom");
             }
             else if (transform.name =="Item Coin") {

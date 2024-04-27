@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] bool isBoss = false;
     [SerializeField] bool isshoot = false;
     [Header("기체 체력과 이속")]
-    [SerializeField]public int m_fHp = 5;
+    [SerializeField] public int m_fHp = 5;
     [SerializeField] float m_fSpeed = 3f;
     [SerializeField] float m_actspeed = 1f;
     SpriteRenderer enemyRenderer;
@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
         m_fStartingPos = transform.position;
         playpos = GameObject.FindWithTag("Player").transform;
         trsDynamic = GameObject.Find("DynamicObj").transform;
-        m_fHp = m_fHp * GameManager.Instance.unithpx + (isBoss ? GameManager.Instance.bosshp : 0);
+        m_fHp += GameManager.Instance.gamelevel + (isBoss ? GameManager.Instance.gamelevel*10 : 0);
     }
     private void OnTriggerEnter2D(Collider2D collision)//부딫히는 경우
     {
@@ -67,13 +67,13 @@ public class Enemy : MonoBehaviour
             }
             else//보스인경우
             {
-                hit();
+                hit(1);
 
             }
             player.hit();
         }
     }
-    public void hit()//피격시
+    /*public void hit()//피격시
     {
         //Debug.Log("피 깎임");
         m_fHp--;
@@ -99,6 +99,36 @@ public class Enemy : MonoBehaviour
                 Debug.Log("보스 아이템 생성");
                 GameManager.Instance.bosskill();
                 GameObject item = PoolingManager.Instance.CreateObj((PoolingManager.ePoolingObject)itemlist,trsDynamic);
+                item.GetComponent<Itemlist>().pos(transform.position);
+            }
+            RemoveObj();
+        }
+    }*/
+    public void hit(int damage)
+    {
+        m_fHp=m_fHp-damage;
+        if (m_fHp <= 0)//체력이 0이 되면
+        {
+            int itemlist = Random.Range((int)PoolingManager.ePoolingObject.Follower, (int)PoolingManager.ePoolingObject.MinionA);
+
+            if (!isBoss)//보스가 아닌경우 점수 올라가고 보스 소환 카운트가 증가하며 아이템 보유 몹인 경우 아이템을 만든다.
+            {
+                GameManager.Instance.Scoretext(point);
+                GameManager.Instance.bosscount();
+                if (haveitem && !alreadydeath)
+                {
+                    alreadydeath = true;
+                    Debug.Log("몹 아이템 생성");
+                    GameObject item = PoolingManager.Instance.CreateObj((PoolingManager.ePoolingObject)itemlist, trsDynamic);
+                    item.GetComponent<Itemlist>().pos(transform.position);
+                }
+            }
+            else if (isBoss && !alreadydeath)//보스인경우 + 여러발을 맞춰서 여러번 호출되는 기능 방지
+            {
+                alreadydeath = true;
+                Debug.Log("보스 아이템 생성");
+                GameManager.Instance.bosskill();
+                GameObject item = PoolingManager.Instance.CreateObj((PoolingManager.ePoolingObject)itemlist, trsDynamic);
                 item.GetComponent<Itemlist>().pos(transform.position);
             }
             RemoveObj();
@@ -135,7 +165,6 @@ public class Enemy : MonoBehaviour
                 shoot();
                 if (m_timer > 3f)//특정시간이 지나면 옆으로 이동하도록
                 {
-
                     sidemoving();
                 }
 

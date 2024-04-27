@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     int m_maxplayershootlv = 7;
     int maxplayerhp = 5;
     bool a;
-
+    float boomtimer=0;
     Camera mainCam;
     // Start is called before the first frame update
     private void Awake()
@@ -72,8 +72,6 @@ public class Player : MonoBehaviour
             {
                 hppointlistchange(false);
             }
-                
-            
         }
     }
 
@@ -187,6 +185,10 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && keytype)
         {
             shootmissile();
+        }
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            shootboom();
         }
     }
     void shootmissile()
@@ -359,4 +361,30 @@ public class Player : MonoBehaviour
         }
         
     }*/
+    void shootboom()
+    { 
+        int boomcount=GameManager.Instance.boomcount;
+        GameManager.Instance.Boomlist(-boomcount);
+        switch (boomcount)
+        {
+            case 1://그냥 점점 커지는 미사일이 쭉 올라가는거
+                GameObject obj=PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom1, m_dynamicObj);
+                obj.GetComponent<Boom>().boomdamage(boomcount);
+                obj.GetComponent<Boom>().checkposition(m_objBarrel.transform.position);
+                break;
+            case 2://폭죽처럼 조그만 미사일이 펑 터지도록
+                GameObject obj2=PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom2, m_dynamicObj);
+                obj2.GetComponent<Boom>().boomdamage(boomcount);
+                obj2.GetComponent<Boom>().checkposition(m_objBarrel.transform.position);
+                break;
+            case 3://왼쪽부터 차례대로 나오도록 조치(아직 미구현)
+                for(int i = 0; i < 6; i++)
+                {
+                   GameObject obj3 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom3, m_dynamicObj);
+                   obj3.GetComponent<Boom>().boomdamage(boomcount);
+                   obj3.GetComponent<Boom>().checkposition(new Vector3(-2.5f + (i * 1), -13f, 0));
+                }
+                break;
+        }
+    }
 }
