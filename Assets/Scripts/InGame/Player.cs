@@ -260,9 +260,9 @@ public class Player : MonoBehaviour
                 {
                     for (int i = 1; i <= m_playershootlv; i++)
                     {
-                        missilespeed = UnityEngine.Random.Range(1.5f + i / 7, 3f);
+                        //missilespeed = UnityEngine.Random.Range(1.5f + i / 7, 3f);
                         GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
-                        obj.GetComponent<Missile>().checkguided(m_objBarrel.transform.position, missilespeed);
+                        obj.GetComponent<GuidedMissile>().checkposition(m_objBarrel.transform.position);
                     }
                 }
                 break;
@@ -289,12 +289,12 @@ public class Player : MonoBehaviour
 
                             if (m_playershootlv >= 6)//6단계 이상시 유도, 다만 속도는 기존 유도형보단 높게
                             {
-                                for (int i = 0; i < 2; i++)
+                                /*for (int i = 0; i < 2; i++)
                                 {
                                     missilespeed = UnityEngine.Random.Range(2.5f, 3f);
                                     GameObject obj4 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
                                     obj4.GetComponent<Missile>().checkguided(m_objBarrel.transform.position, missilespeed);
-                                }
+                                }*/
                             }
                         }
                     }

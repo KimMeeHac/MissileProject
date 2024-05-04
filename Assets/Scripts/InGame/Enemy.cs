@@ -42,7 +42,6 @@ public class Enemy : MonoBehaviour
             if (isBoss || isshoot)
             {
                 firstmov = true;
-                isrightmov = false ;
                 m_fRatioY = 0f;
             }
             PoolingManager.Instance.RemovePoolingObject(gameObject);
@@ -326,9 +325,9 @@ public class Enemy : MonoBehaviour
     }
     void sidemoving()//옆으로 움직이는 함수
     {
+        Vector3 currentpos = Camera.main.WorldToViewportPoint(transform.position);
         if (isBoss)//보스인경우 왔다갔다 하는 기능
         {
-            Vector3 currentpos = Camera.main.WorldToViewportPoint(transform.position);
             if (isrightmov)
             {
                 transform.position += Vector3.right * Time.deltaTime * m_fSpeed;
@@ -348,7 +347,7 @@ public class Enemy : MonoBehaviour
         }
         else//일반 몹인경우 오른쪽 혹은 왼쪽으로 빠지도록
         {
-            if (m_fStartingPos.x > 0f)
+            if (currentpos.x > 0f)
             {
                 transform.position += Vector3.right * Time.deltaTime;
             }

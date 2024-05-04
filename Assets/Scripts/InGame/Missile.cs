@@ -9,20 +9,20 @@ public class Missile : MonoBehaviour
     [SerializeField] bool guiding = false;
     [SerializeField] public float m_speed = 3f;
     [SerializeField] float m_damage = 1f;
-    Transform eunit;
-    Range range;
-    [SerializeField] Enemy Target;
-    Vector3 pos;
-    float angle;
-    [SerializeField] bool setguided = false;
-    bool targetlockon; 
-    float a = 0;
+    //Transform eunit;
+    //Range range;
+    //[SerializeField] Enemy Target;
+    //Vector3 pos;
+    //float angle;
+    //[SerializeField] bool setguided = false;
+    //bool targetlockon; 
+    //float a = 0;
     void Start()
     {
-        if (players&&guiding)
+        /*if (players&&guiding)
         {
             range = transform.GetChild(0).GetComponent<Range>();
-        }
+        }*/
     }
     private void OnBecameInvisible()//안 보일시 파괴,풀링 사용해서 반환하는거 만들 필요
     {
@@ -32,12 +32,12 @@ public class Missile : MonoBehaviour
     {
         //반납하는 미사일들은 초기화를 해줘야함
         transform.rotation = Quaternion.identity;
-        if (players&&guiding)
+        /*if (players&&guiding)
         {
             range.trsTarget = null;
             Target = null;
             range.enabled = true; 
-        }
+        }*/
         if (PoolingManager.Instance != null)
         {
             PoolingManager.Instance.RemovePoolingObject(gameObject);
@@ -66,13 +66,13 @@ public class Missile : MonoBehaviour
             transform.rotation = Quaternion.identity;
         }
     }
-    public void checkguided(Vector3 _pos, float _speed)//유도미사일
+    /*public void checkguided(Vector3 _pos, float _speed)//유도미사일
     {
         guiding = true;
         setguided = true;//유도기능 켜기
         transform.position = _pos;//발사 위치
         m_speed = _speed;//발사 속도
-    }
+    }*/
 
     /*private void OnTriggerEnter2D(Collider2D collision)//풀링 사용할 것, 부딫히는 경우 
     {
@@ -105,7 +105,7 @@ public class Missile : MonoBehaviour
     void Update()
     {
         move();
-        target();
+        //target();
     }
     void move()
     //미사일이 계속 호출되면서 움직이는 곳
@@ -116,7 +116,7 @@ public class Missile : MonoBehaviour
         //transform.position += mypos * m_speed * Time.deltaTime;
         transform.position += transform.up * m_speed * Time.deltaTime;//각도 정해진대로 쭉 올라감
     }
-    public void target()//유도미사일인경우-머리 위치가 바뀌는경우
+    /*public void target()//유도미사일인경우-머리 위치가 바뀌는경우
     {
         if (setguided)//유도미사일인경우
         {
@@ -172,5 +172,5 @@ public class Missile : MonoBehaviour
     public void Targetset(Transform _target)
     {
         Target = _target.GetComponent<Enemy>();
-    }
+    }*/
 }

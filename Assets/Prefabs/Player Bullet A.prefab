@@ -94,7 +94,6 @@ MonoBehaviour:
   guided: 1
   enemys: 0
   bosses: 0
-  missileobj: {fileID: 4063028733599780897}
 --- !u!1 &4063028733599780897
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,7 +105,7 @@ GameObject:
   - component: {fileID: 5674167992441371946}
   - component: {fileID: 5741988391992680265}
   - component: {fileID: 2169199492978755183}
-  - component: {fileID: 2587900094341312449}
+  - component: {fileID: 4073577750094962900}
   m_Layer: 0
   m_Name: Player Bullet A
   m_TagString: Untagged
@@ -210,7 +209,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2587900094341312449
+--- !u!114 &4073577750094962900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,17 +218,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4063028733599780897}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65bf6983d18f12d4aa5c215a399ac11e, type: 3}
+  m_Script: {fileID: 11500000, guid: a00f0a1bfe4402a4d9e59ea7ae6913ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemys: 0
-  players: 1
-  bosses: 0
-  guiding: 1
-  m_speed: 5
-  m_damage: 1
+  m_speed: 3
   Target: {fileID: 0}
-  setguided: 0
 --- !u!1 &8718704984097115214
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,14 +5,17 @@ using UnityEngine;
 public class Range : MonoBehaviour
 {
     CircleCollider2D identyfyRange;
-    Missile mis;
-    private bool Target = false;
+    //Missile mis;
+    GuidedMissile mis;
+    bool Target = false;
 
     public bool Debuging = true;
     public Transform trsTarget = null;
+    //Vector3 Missile_position;
+    //Vector3 Enemy_position;
+    //GuidedMissile Guidedmis;
 
-
-    private void OnDrawGizmos()
+    private void OnDrawGizmos()//빨간 선을 그어서 무엇을 노리는지 알려주는 기능
     {
         if (Debuging && trsTarget != null)
         {
@@ -24,8 +27,8 @@ public class Range : MonoBehaviour
     void Start()
     {
         identyfyRange = GetComponent<CircleCollider2D>();
-        mis = transform.parent.GetComponent<Missile>();
-        //mis=GetComponentInParent<Missile>();
+        //Guidedmis = transform.parent.GetComponent<GuidedMissile>();
+        mis=GetComponentInParent<GuidedMissile>();
     }
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
@@ -44,7 +47,21 @@ public class Range : MonoBehaviour
     //        }
     //    }
     //}
-
+    /*private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Missile_position = transform.parent.position;
+        Enemy_position = collision.transform.position;
+        Vector3 direction = Enemy_position - Missile_position;
+        float MistoEnemy = Mathf.Atan2(direction.x, direction.y) * 180 / Mathf.PI - 90;
+        if (!Target)//타겟이 정해지지 않은 경우
+        {
+            if ((collision.tag == eTag.Enemy.ToString() || collision.tag == eTag.Boss.ToString()) && (MistoEnemy >= 60 || MistoEnemy <= -60))
+            {
+                //몹이나 보스이면서 각도가 -60~60 사이인 경우 타겟이 정해지게 하고 그 각도를 계속 
+                Target = true;
+            }
+        }
+    }*/
 
 
     // Update is called once per frame
