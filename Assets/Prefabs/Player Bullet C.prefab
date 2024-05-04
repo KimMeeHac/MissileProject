@@ -131,10 +131,8 @@ MonoBehaviour:
   players: 1
   bosses: 0
   guiding: 0
-  m_speed: 3
+  m_speed: 4
   m_damage: 1
-  Target: {fileID: 0}
-  setguided: 0
 --- !u!61 &-5440082515062164639
 BoxCollider2D:
   m_ObjectHideFlags: 0

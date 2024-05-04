@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
         spawnaxis.x = maincamera.ViewportToWorldPoint(new Vector3(0.15f, 0f)).x;//몹 스폰 왼쪽 한계선
         spawnaxis.y = maincamera.ViewportToWorldPoint(new Vector3(0.85f, 0f)).x;//몹 스폰 오른쪽 한계선
         boomlist = new List<GameObject>();
+        maincamera.GetComponent<AudioSource>().volume = DataManager.Instance.gamevolume();
         for (int i = 0; i < 3; i++)
         {
             boomlist.Add(Instantiate(boomicon, Boomgroup));
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
         {
             iRand = Random.Range(0, m_listEnemy.Count);//어떤 몹을 소환하는지 0~?까지
             string findname = m_listEnemy[iRand].name;//그 몹의 이름
+            Debug.Log(findname);
             GameObject objenemy = PoolingManager.Instance.CreateObj(findname, dynamicobj);//풀링으로 몹 생성
             objenemy.GetComponent<Enemy>().m_fHp = (gamelevel - 1) * 2 + (iRand + 1);
             objenemy.GetComponent<Enemy>().point = iRand + 1;
@@ -117,7 +119,7 @@ public class GameManager : MonoBehaviour
             GameObject objboss = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Enemy_Boss, dynamicobj);
             //objboss.GetComponent<Enemy>().m_fHp = bosshp;
             objboss.GetComponent<Enemy>().m_fHp = gamelevel * 11;
-            objboss.GetComponent<Enemy>().m_bossmissilespeed = m_misspeed;
+            objboss.GetComponent<Enemy>().m_bossmissilespeed = m_misspeed+(gamelevel-1)*0.5f;
             objboss.GetComponent<Enemy>().m_bosspattern = m_miscooldown;
             objboss.transform.position = new Vector3(0f, 4f);
         }
@@ -127,23 +129,23 @@ public class GameManager : MonoBehaviour
         bosskillcount++;
         if (bosskillcount % 2 == 1)
         {
-            m_misspeed += 0.2f;
+            m_misspeed += 1f;
             //발사체 속도 증가
         }
         else
         {
             //총 쏘고 난 후 딜레이 시간 감소
             m_miscooldown -= 0.5f;
-            if (m_miscooldown < 1.5f)
+            if (m_miscooldown < 1.0f)
             {
-                m_miscooldown = 1.5f;
+                m_miscooldown = 1.0f;
             }
         }
         gamelevel += 1;
         spawnLv -= 0.1f;
         if (spawnLv <= 0f)
         {
-            spawnLv = 0.5f;
+            spawnLv = 0.1f;
         }
         bossspawn = false;
     }

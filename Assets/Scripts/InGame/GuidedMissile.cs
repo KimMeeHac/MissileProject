@@ -12,7 +12,7 @@ public class GuidedMissile : MonoBehaviour
     float angleturn = 0;
     void Start()
     {
-        raider = GetComponent<Range>();
+        raider = GetComponentInChildren<Range>();
 
     }
     private void OnBecameInvisible()//맵에서 사라지면 제거되도록
@@ -21,6 +21,12 @@ public class GuidedMissile : MonoBehaviour
     }
     public void RemoveObj()//오브젝트를 다시 풀링매니저에 돌려놓는 기능
     {
+        raider.enabled = true;
+        Target = null;
+        transform.rotation = Quaternion.identity;
+        raider.trsTarget = null;
+        raider.Target = false;
+
         if (PoolingManager.Instance != null)
         {
             PoolingManager.Instance.RemovePoolingObject(gameObject);
@@ -35,10 +41,10 @@ public class GuidedMissile : MonoBehaviour
     }
     public void target()//유도미사일인경우-머리 위치가 바뀌는경우
     {
-        if (Target != null && Target.transform.parent.name == Target.name)
+        /*if (Target != null && Target.transform.parent.name == Target.name)
         {
             Target = null;
-        }
+        }*/
 
 
         if (Target == null && raider.enabled)//타겟이 정해지지 않았고 Range 스크립트가 켜져있는 경우
@@ -70,7 +76,7 @@ public class GuidedMissile : MonoBehaviour
             //특정 각도를 벗어날시,적이 다시 null될시 유도기능 비활성화
             {
                 Debug.Log("이 미사일의 유도 꺼짐");
-                findingTarget = false;
+                return;
             }
             angleturn += (angle / 1.2f) * Time.deltaTime;
             if ((angleturn >= 0 && angleturn >= angle) || (angleturn < 0 && angleturn <= angle))

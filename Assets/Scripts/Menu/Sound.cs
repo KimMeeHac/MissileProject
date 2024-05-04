@@ -10,10 +10,12 @@ public class Sound : MonoBehaviour
     [SerializeField] TMP_InputField soundtext;
     [SerializeField] Button Return;
     [SerializeField] Canvas Menu;
+    [SerializeField] Transform volume;
     bool force = false;
     // Start is called before the first frame update
     void Start()
     {
+        
         //만약 값을 보낼때 true 값을 함께 보내는 경우 true값을 확인하면 addlistener를 쓰지 않도록 처리
         soundbar.onValueChanged.AddListener((x) =>
         {
@@ -23,6 +25,7 @@ public class Sound : MonoBehaviour
             if (force == false)
             { 
                 soundtext.text = x.ToString();
+                volume.GetComponent<Audiotest>().audiovaluechange(x);
             }
 
             if(force == true) 
@@ -42,6 +45,7 @@ public class Sound : MonoBehaviour
                 force = true;
                 soundbar.value = 0;
             }
+            volume.GetComponent<Audiotest>().audiovaluechange(soundbar.value);
         });
         Return.onClick.AddListener(() =>
         {

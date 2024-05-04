@@ -17,8 +17,9 @@ public class Enemy : MonoBehaviour
     Transform playpos;
     Transform trsDynamic;
     float m_fRatioY = 0f;
-    float timer = 0f;
-    float m_timer = 0f;
+    float patterntimer = 0f;
+    float m_movetimer = 0f;
+    float shoottimer = 0f;
     public float m_bosspattern = 5f;
     public float m_bossmissilespeed = 3f;
     bool bulletshoot = false;
@@ -43,6 +44,13 @@ public class Enemy : MonoBehaviour
             {
                 firstmov = true;
                 m_fRatioY = 0f;
+                m_movetimer = 0f;
+                shoottime = 0;
+            }
+            if (haveitem)
+            {
+                haveitem = false;
+                enemyRenderer.color = new Color(1f, 1f, 1f);
             }
             PoolingManager.Instance.RemovePoolingObject(gameObject);
         }
@@ -110,7 +118,7 @@ public class Enemy : MonoBehaviour
     }*/
     public void hit(int damage)
     {
-        m_fHp=m_fHp-damage;
+        m_fHp = m_fHp - damage;
         if (m_fHp <= 0)//체력이 0이 되면
         {
             int itemlist = Random.Range((int)PoolingManager.ePoolingObject.Follower, (int)PoolingManager.ePoolingObject.MinionA);
@@ -162,18 +170,18 @@ public class Enemy : MonoBehaviour
         {
             //StartCoroutine(Shootenemymov());
             //코루틴 사용시 update에 넣지 않도록 조치->렉 이슈 생김
-            m_timer += Time.deltaTime;
+            m_movetimer += Time.deltaTime;
             startmoving();//시작무빙 함수 호출
-            if (m_timer > 2f)//특정 시간이 지나면 총을쏘도록
+            if (m_movetimer > 2f)//특정 시간이 지나면 총을쏘도록
             {
                 shoot();
-                if (m_timer > 3f)//특정시간이 지나면 옆으로 이동하도록
+                if (m_movetimer > 3f)//특정시간이 지나면 옆으로 이동하도록
                 {
                     sidemoving();
                 }
 
             }
-            
+
         }
     }
     /*IEnumerator Shootenemymov()
@@ -205,6 +213,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
+                //m_fStartingPos=transform.position;
                 m_fRatioY += Time.deltaTime * 0.5f;
                 if (m_fRatioY > 1.0f)//시간 지나면 움직임 멈추게
                 {
@@ -222,12 +231,12 @@ public class Enemy : MonoBehaviour
         {
             if (patternchange)//패턴채인지가 켜지는 경우 패턴 변경
             {
-                timer += Time.deltaTime;
-                if (timer > m_bosspattern)
+                patterntimer += Time.deltaTime;
+                if (patterntimer > m_bosspattern)
                 {
                     Debug.Log("패턴변경");
                     pattern = Random.Range(0, 3);
-                    timer = 0.0f;
+                    patterntimer = 0.0f;
                     patternchange = false;
                 }
                 return;
@@ -237,10 +246,10 @@ public class Enemy : MonoBehaviour
                 case 0://전방샷
                     {
 
-                        timer += Time.deltaTime;
-                        if (timer > 1f)
+                        patterntimer += Time.deltaTime;
+                        if (patterntimer > 1f)
                         {
-                            timer = 0f;
+                            patterntimer = 0f;
                             shoottime++;
                             for (int j = 1; j <= 3; j++)
                             {
@@ -261,10 +270,10 @@ public class Enemy : MonoBehaviour
                     break;
                 case 1: //샷건
                     {
-                        timer += Time.deltaTime;
-                        if (timer > 1)
+                        patterntimer += Time.deltaTime;
+                        if (patterntimer > 1)
                         {
-                            timer = 0f;
+                            patterntimer = 0f;
                             shoottime++;
                             Vector3 pos = playpos.position - transform.position;
                             float angle = Mathf.Atan2(pos.y, pos.x) * 180 / Mathf.PI - 90;
@@ -289,20 +298,19 @@ public class Enemy : MonoBehaviour
                 case 2: //조준형
                     {
 
-                        timer += Time.deltaTime;
-                        if (timer > 0.3)
+                        patterntimer += Time.deltaTime;
+                        if (patterntimer > 0.3)
                         {
                             Vector3 pos = playpos.position - transform.position;//도착지-시작지=거리벡터
                             GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Enemy_Bullet_D, trsDynamic);
                             obj.GetComponent<Missile>().checkrotation(pos, transform.position);
 
                             obj.GetComponent<Missile>().m_speed = m_bossmissilespeed;
-                            timer = 0;
+                            patterntimer = 0;
                             shoottime++;
                         }
                         if (shoottime >= 20)
                         {
-
                             Debug.Log("조준샷 다쏨");
                             patternchange = true;
                             shoottime = 0;
@@ -312,14 +320,25 @@ public class Enemy : MonoBehaviour
                     break;
             }
         }
-        else //보스가 아닌경우 1번 쏘고 옆으로 빠지게
+        else //보스가 아닌경우 n번 쏘고 옆으로 빠지게 (난이도 증가시 총알을 더 여러번 쏘고 움직이도록)
         {
             if (!bulletshoot)
             {
-                Vector3 pos = playpos.position - transform.position;//도착지-시작지=거리벡터
-                GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Enemy_Bullet_A, trsDynamic);
-                obj.GetComponent<Missile>().checkrotation(pos, transform.position);
-                bulletshoot = true;
+                int shootlevel = GameManager.Instance.gamelevel;
+                patterntimer += Time.deltaTime;
+                if (shoottime >= shootlevel)
+                {
+                    bulletshoot = true;
+                }
+                if (patterntimer > 0.5)
+                {
+                    Vector3 pos = playpos.position - transform.position;//도착지-시작지=거리벡터
+                    GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Enemy_Bullet_A, trsDynamic);
+                    obj.GetComponent<Missile>().checkrotation(pos, transform.position);
+                    shoottime++;
+                    patterntimer = 0;
+                }
+                
             }
         }
     }
@@ -347,7 +366,7 @@ public class Enemy : MonoBehaviour
         }
         else//일반 몹인경우 오른쪽 혹은 왼쪽으로 빠지도록
         {
-            if (currentpos.x > 0f)
+            if (currentpos.x > 0.5f)
             {
                 transform.position += Vector3.right * Time.deltaTime;
             }

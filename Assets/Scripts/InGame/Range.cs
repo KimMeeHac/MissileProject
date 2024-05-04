@@ -7,7 +7,7 @@ public class Range : MonoBehaviour
     CircleCollider2D identyfyRange;
     //Missile mis;
     GuidedMissile mis;
-    bool Target = false;
+    public bool Target = false;
 
     public bool Debuging = true;
     public Transform trsTarget = null;

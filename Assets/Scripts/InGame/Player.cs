@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform m_dynamicObj;
     [Header("플레이어 스텟")]
     [Tooltip("체력")][SerializeField] int playerHP = 5;
-    [Tooltip("이동속도 조정기능")][SerializeField] float m_fSpeed = 5f;
+    [Tooltip("이동속도 조정기능")][SerializeField] float m_fSpeed = 3f;
     [Tooltip("무적시간 조정기능")][SerializeField] float m_invinciTime = 1f;
     [Tooltip("발사 타입")][Range(1, 4)][SerializeField] int m_shootType = 1;
     [Tooltip("발사 단계")][SerializeField][Range(1, 7)] int m_playershootlv = 1;
@@ -21,13 +21,15 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject Hppoint;
     [SerializeField] List<GameObject> hppointlist = new List<GameObject>();
     SpriteRenderer playerRenderer;
+    Animator animator;
     bool m_invincibile = false;
     float m_invinciTimer = 0f;
-    float missilespeed;
+    float hori;
+    float vert;
     int m_maxplayershootlv = 7;
     int maxplayerhp = 5;
     bool a;
-    float boomtimer=0;
+    float boomtimer = 0;
     Camera mainCam;
     // Start is called before the first frame update
     private void Awake()
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+        animator = GetComponent<Animator>();
         m_shootType = DataManager.Instance.shootforplayer();//총쏘는 타입을 받아옴
         keytype = DataManager.Instance.keytypeforplayer();//키마 or only키보드 타입 받아옴
         m_playershootlv = 1;
@@ -55,7 +58,7 @@ public class Player : MonoBehaviour
         else
         {
             m_invincibile = true;//무적기능 켜짐
-            
+
             playerHP--;
             if (playerHP <= 0)
             {
@@ -85,7 +88,8 @@ public class Player : MonoBehaviour
     }
     void moving()//움직이는 기능
     {
-        float hori = 0, vert = 0;
+        hori = 0;
+        vert = 0;
         if (!keytype)//키보드만 쓸 경우
         {
             if (Input.GetKey(KeyCode.UpArrow))
@@ -125,6 +129,7 @@ public class Player : MonoBehaviour
             {
                 hori = -1f;
             }
+            animator.SetFloat("hori",hori);
             Transform PlayerTrs = GetComponent<Transform>();
             PlayerTrs.position = PlayerTrs.position + new Vector3(hori, vert) * Time.deltaTime * m_fSpeed;
         }
@@ -258,11 +263,33 @@ public class Player : MonoBehaviour
                 break;
             case 3://3타입 유도형 유도탄마다 속도가 다르게 설정, 단계가 오를수록 최저속도가 높아지도록 처리
                 {
-                    for (int i = 1; i <= m_playershootlv; i++)
+                    /*for (int i = 1; i <= m_playershootlv; i++)
                     {
                         //missilespeed = UnityEngine.Random.Range(1.5f + i / 7, 3f);
                         GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
                         obj.GetComponent<GuidedMissile>().checkposition(m_objBarrel.transform.position);
+                    }*/
+                    if (m_playershootlv % 2 == 1)
+                    {
+                        GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
+                        obj.GetComponent<GuidedMissile>().checkposition(m_objBarrel.transform.position);
+                        for (int i = 1; i <= m_playershootlv - 1; i++)
+                        {
+                            GameObject obj2 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
+                            obj2.GetComponent<GuidedMissile>().checkposition(m_objBarrel.transform.position + new Vector3(0.25f * (int)((i + 1) / 2) * MathF.Pow(-1, i), 0, 0));
+                            //Debug.Log(m_objBarrel.transform.position + new Vector3(0.25f * (int)((i + 1) / 2) * MathF.Pow(-1, i), 0, 0));
+                        }
+                    }
+                    else
+                    {
+                        a = false;
+                        for (int i = 1; i <= m_playershootlv; i++)
+                        {
+                            GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
+                            obj.GetComponent<GuidedMissile>().checkposition(m_objBarrel.transform.position + new Vector3(0.125f * (i - Convert.ToInt32(a)) * Mathf.Pow(-1, i), 0, 0));
+                            //Debug.Log(m_objBarrel.transform.position + new Vector3(0.125f * (i - Convert.ToInt32(a)) * Mathf.Pow(-1, i), 0, 0));
+                            a = !a;
+                        }
                     }
                 }
                 break;
@@ -287,7 +314,7 @@ public class Player : MonoBehaviour
                             GameObject obj3 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_B, m_dynamicObj);
                             obj3.GetComponent<Missile>().checkposition(m_objBarrel.transform.position + new Vector3(-0.4f, 0, 0));
 
-                            if (m_playershootlv >= 6)//6단계 이상시 유도, 다만 속도는 기존 유도형보단 높게
+                            if (m_playershootlv >= 6)//6단계 이상시 유도
                             {
                                 /*for (int i = 0; i < 2; i++)
                                 {
@@ -295,6 +322,12 @@ public class Player : MonoBehaviour
                                     GameObject obj4 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
                                     obj4.GetComponent<Missile>().checkguided(m_objBarrel.transform.position, missilespeed);
                                 }*/
+                                for (int i = 6; i <= 7; i++)
+                                {
+                                    GameObject obj4 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Player_Bullet_A, m_dynamicObj);
+                                    obj4.GetComponent<GuidedMissile>().checkposition(m_objBarrel.transform.position + new Vector3(0.25f * (int)((i + 1) / 2) * MathF.Pow(-1, i), 0, 0));
+                                    //Debug.Log(m_objBarrel.transform.position + new Vector3(0.25f * (int)((i + 1) / 2) * MathF.Pow(-1, i), 0, 0));
+                                }
                             }
                         }
                     }
@@ -351,7 +384,7 @@ public class Player : MonoBehaviour
         }
         else//체력이 내려갈 시
         {
-                hppointlist[playerHP].SetActive(false);
+            hppointlist[playerHP].SetActive(false);
         }
 
     }
@@ -366,18 +399,18 @@ public class Player : MonoBehaviour
         
     }*/
     void shootboom()
-    { 
-        int boomcount=GameManager.Instance.boomcount;
+    {
+        int boomcount = GameManager.Instance.boomcount;
         GameManager.Instance.Boomlist(-boomcount);
         switch (boomcount)
         {
             case 1://그냥 점점 커지는 미사일이 쭉 올라가는거
-                GameObject obj=PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom1, m_dynamicObj);
+                GameObject obj = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom1, m_dynamicObj);
                 obj.GetComponent<Boom>().boomdamage(boomcount);
                 obj.GetComponent<Boom>().checkposition(m_objBarrel.transform.position);
                 break;
             case 2://폭죽처럼 조그만 미사일이 펑 터지도록
-                GameObject obj2=PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom2, m_dynamicObj);
+                GameObject obj2 = PoolingManager.Instance.CreateObj(PoolingManager.ePoolingObject.Boom2, m_dynamicObj);
                 obj2.GetComponent<Boom>().boomdamage(boomcount);
                 obj2.GetComponent<Boom>().checkposition(m_objBarrel.transform.position);
                 break;

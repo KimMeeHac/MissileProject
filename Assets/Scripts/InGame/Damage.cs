@@ -15,8 +15,16 @@ public class Damage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        guidemis = GetComponent<GuidedMissile>();
-        mis = GetComponent<Missile>();//일반 미사일인 경우 호출하는법                            
+        if (guided)
+        {
+            guidemis = GetComponentInParent<GuidedMissile>();
+
+        }
+        else
+        {
+            mis = GetComponent<Missile>();//일반 미사일인 경우 호출하는법                            
+
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)//풀링 사용할 것, 부딫히는 경우 
     {

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class Subscribing : MonoBehaviour
 {
-    string[] keymousestring= { "방향키로 이동 및 스페이스바로 미사일 발사", "WASD로 이동 및 마우스 좌클릭으로 발사" };
-    string[] shoottypestring= { "직선형 미사일", "방사형(샷건형) 미사일", "유도형 미사일", "직선,방사,유도 혼합형" };
+    string[] keymousestring= { "방향키로 이동 & 스페이스바로 미사일 발사\n왼쪽 Ctrl로 폭탄 발사", "WASD로 이동 & 마우스 좌클릭으로 발사\n왼쪽 Ctrl로 폭탄 발사" };
+    string[] shoottypestring= { "발사 시 직선으로 올라갑니다.", "발사 시 총알이 흩뿌려집니다.", "발사 시 적을 포착하면 각도를 틉니다.\n대상이 사라지면 그 각도 그대로 직진합니다.", "직선형, 방사형, 유도형의 혼합입니다." };
     string keymouse = "";
     string shoottype = "";
     public void scribe(int btn)
@@ -23,7 +23,7 @@ public class Subscribing : MonoBehaviour
             shoottype = shoottypestring[btn - 2];
             DataManager.Instance.shoottype(btn - 2);
         }
-        GetComponent<TextMeshProUGUI>().text= "조작 방법\n"+keymouse + "\n발사 방법\n" + shoottype;
+        GetComponent<TextMeshProUGUI>().text= "조작 타입\n"+keymouse + "\n발사 타입\n" + shoottype;
     }
     
 }

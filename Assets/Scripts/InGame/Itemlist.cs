@@ -41,6 +41,7 @@ public class Itemlist : MonoBehaviour
 
     void RemoveObj()
     {
+        timer = 0f;
         if (PoolingManager.Instance != null)
         {
             PoolingManager.Instance.RemovePoolingObject(gameObject);

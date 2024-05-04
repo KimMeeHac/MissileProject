@@ -42,7 +42,7 @@ public class Ranking : MonoBehaviour
         
         }*/
         List<int> ranklist = new List<int>();//리스트 선언
-        string path = Path.Combine(Application.dataPath, "ScoreData");//json파일 위치를 string 으로 받아옴
+        string path = Path.Combine(Application.dataPath, "Data");//json파일 위치를 string 으로 받아옴
         if (File.Exists(path)) //파일 존재시
         { 
             string rank = File.ReadAllText(path);//json파일을 불러온다.

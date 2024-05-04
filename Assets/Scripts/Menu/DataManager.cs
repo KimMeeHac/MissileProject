@@ -11,6 +11,14 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance;
     int shootty;
     bool keytypeset;
+    float vol;
+    [System.Serializable]
+    public class audiocliplist
+    {
+        public AudioClip clip;
+        [TextArea] public string description;
+    }
+    public List<audiocliplist> audiolist;
     private void Awake()
     {
         if (Instance == null) 
@@ -42,10 +50,18 @@ public class DataManager : MonoBehaviour
     {
         return keytypeset;
     }
+    public void savevolume(float _vol)
+    {
+        vol = _vol;
+    }
+    public float gamevolume()
+    {
+        return vol;
+    }
     public void savescore(int _score)//엔딩 점수를 받아옴
     {
         List<int> scores= new List<int>();
-        string path = Path.Combine(Application.dataPath, "ScoreData");//json 파일 경로
+        string path = Path.Combine(Application.dataPath, "Data");//json 파일 경로
         Endscore endscore = new Endscore();
         if (File.Exists(path))//파일이 존재할 경우 불러옴
         {
